@@ -1,0 +1,473 @@
+:root {
+    --primary-color: #2563eb;
+    /* Royal Blue */
+    --secondary-color: #64748b;
+    /* Cool Slate */
+    --accent-color: #0f172a;
+    /* Deep Midnight / Colors */
+    --bg-light: #f8fafc;
+}
+
+body {
+    background-color: var(--bg-light);
+    font-family: 'Outfit', sans-serif;
+    color: var(--accent-color);
+}
+
+.navbar {
+    background: var(--accent-color) !important;
+    border-bottom: 3px solid var(--primary-color);
+}
+
+.hero-section {
+    background: linear-gradient(135deg, var(--accent-color) 0%, var(--primary-color) 100%);
+    color: white;
+    padding: 80px 0;
+    border-radius: 40px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.card {
+    border: none;
+    border-radius: 20px;
+    background: white;
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.card-hover:hover {
+    transform: translateY(-12px);
+    box-shadow: 0 25px 50px rgba(37, 99, 235, 0.12) !important;
+}
+
+/* Modern Course Card Style */
+.course-card {
+    border: 1px solid rgba(0, 0, 0, 0.04);
+    transition: all 0.3s ease;
+}
+
+.course-card .card-img-top {
+    transition: all 0.5s ease;
+}
+
+.course-card:hover .card-img-top {
+    transform: scale(1.05);
+}
+
+.course-card .card-title {
+    font-size: 1.25rem;
+    line-height: 1.4;
+    height: 2.8em;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.course-card .card-text {
+    height: 4.5em;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.hover-primary:hover {
+    color: var(--primary-color) !important;
+    transition: color 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.fade-in {
+    animation: fadeIn 0.5s ease-out forwards;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--primary-color) 0%, #1d4ed8 100%) !important;
+    border: none !important;
+    padding: 12px 25px;
+    border-radius: 12px;
+    font-weight: 600;
+    color: white !important;
+    box-shadow: 0 4px 15px rgba(37, 99, 235, 0.2);
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(37, 99, 235, 0.3);
+}
+
+.btn-secondary {
+    background-color: var(--secondary-color) !important;
+    border: none !important;
+    border-radius: 12px;
+    color: white !important;
+}
+
+.btn-accent {
+    background-color: var(--accent-color) !important;
+    border: none !important;
+    border-radius: 12px;
+    color: white !important;
+}
+
+.text-primary {
+    color: var(--primary-color) !important;
+}
+
+.text-secondary {
+    color: var(--secondary-color) !important;
+}
+
+.text-accent {
+    color: var(--accent-color) !important;
+}
+
+.bg-primary {
+    background-color: var(--primary-color) !important;
+    color: white !important;
+}
+
+.bg-secondary {
+    background-color: var(--secondary-color) !important;
+    color: white !important;
+}
+
+.bg-accent {
+    background-color: var(--accent-color) !important;
+    color: white !important;
+}
+
+.badge-primary {
+    background: var(--primary-color) !important;
+    color: white !important;
+    border-radius: 20px;
+    padding: 5px 12px;
+}
+
+.list-group-item.active {
+    background-color: var(--primary-color) !important;
+    border-color: var(--primary-color) !important;
+}
+
+/* Custom Profile Image */
+.profile-img {
+    width: 140px;
+    height: 140px;
+    border: 4px solid var(--primary-color);
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.card-hover {
+    transition: all 0.3s ease;
+}
+
+.card-hover:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Active Link Styling */
+.navbar-nav .nav-link.active {
+    color: var(--primary-color) !important;
+    position: relative;
+    font-weight: 600;
+}
+
+.navbar-nav .nav-link.active::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 10px;
+    right: 10px;
+    height: 3px;
+    background-color: var(--primary-color);
+    border-radius: 2px;
+}
+
+/* Documentation Styling */
+.documentation-body {
+    line-height: 1.8;
+    font-size: 1.15rem;
+    color: var(--accent-color);
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+
+.documentation-body h1,
+.documentation-body h2,
+.documentation-body h3 {
+    color: var(--primary-color);
+    margin-top: 2rem;
+    font-weight: 700;
+}
+
+/* VS Code Theme & Code Blocks */
+/* VS Code Theme & Code Blocks */
+/* VS Code Theme & Code Blocks */
+.ms-word-document pre,
+pre[class*="language-"] {
+    border-radius: 8px !important;
+    margin: 1.5rem 0 !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15) !important;
+    position: relative !important;
+    /* 35px header + 20px spacing = 55px top */
+    padding: 55px 25px 25px 25px !important;
+    width: fit-content !important;
+    min-width: 200px;
+    max-width: 100% !important;
+    overflow-x: auto;
+    background-color: #f9f9f9;
+    /* Ensure background for non-highlighted blocks */
+    border: 1px solid #e2e8f0;
+}
+
+/* Fake VS Code Title Bar */
+.ms-word-document pre::before,
+pre[class*="language-"]::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 35px;
+    background: #333333;
+    border-radius: 8px 8px 0 0;
+    z-index: 10;
+}
+
+/* Window Buttons icon look */
+.ms-word-document pre::after,
+pre[class*="language-"]::after {
+    content: "● ● ●";
+    position: absolute;
+    top: 5px;
+    left: 15px;
+    font-size: 14px;
+    letter-spacing: 2px;
+    background: linear-gradient(to right, #ff5f56 33%, #ffbd2e 33%, #ffbd2e 66%, #27c93f 66%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    z-index: 11;
+}
+
+.line-numbers .line-numbers-rows {
+    padding-top: 35px !important;
+}
+
+pre[class*="language-"].line-numbers {
+    padding-left: 3.8em !important;
+}
+
+.ms-word-document code {
+    font-family: 'Consolas', 'Monaco', 'Andale Mono', 'Ubuntu Mono', monospace !important;
+    font-size: 0.9em;
+}
+
+/* Normal Documentation Styling */
+.ms-word-document {
+    font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+    line-height: 1.6;
+    color: #1e293b;
+    padding: 2.5rem !important;
+    background-color: white;
+}
+
+.ms-word-document h1,
+.ms-word-document h2,
+.ms-word-document h3 {
+    color: #0f172a;
+    font-weight: 700;
+    margin-top: 2rem;
+    margin-bottom: 1.25rem;
+}
+
+.ms-word-document p {
+    margin-bottom: 1.25rem;
+    font-size: 1.05rem;
+}
+
+/* CKEditor 5 Content Styles */
+.ck-content .text-tiny {
+    font-size: 0.7em;
+}
+
+.ck-content .text-small {
+    font-size: 0.85em;
+}
+
+.ck-content .text-big {
+    font-size: 1.4em;
+}
+
+.ck-content .text-huge {
+    font-size: 1.8em;
+}
+
+.ck-content blockquote {
+    overflow: hidden;
+    padding: 1em 1.5em;
+    margin: 1.5rem 0;
+    font-style: italic;
+    border-left: 5px solid var(--primary-color);
+    background: #f8fafc;
+    color: #475569;
+}
+
+.ck-content .image {
+    display: table;
+    clear: both;
+    text-align: center;
+    margin: 1.5rem auto;
+}
+
+.ck-content .image img {
+    display: block;
+    margin: 0 auto;
+    max-width: 100%;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.ck-content .table {
+    margin: 2rem 0;
+    width: 100%;
+    overflow-x: auto;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+}
+
+.ck-content .table table {
+    border-collapse: collapse;
+    width: 100%;
+    background-color: white;
+    font-size: 1rem;
+}
+
+.ck-content .table table th {
+    background-color: #f8fafc;
+    /* Light gray background */
+    color: #1e293b;
+    font-weight: 700;
+    text-align: left;
+    padding: 1rem 1.5rem;
+    border-bottom: 2px solid #e2e8f0;
+
+    /* Sticky Header Configuration */
+    position: sticky;
+    top: 110px;
+    /* 60px Sidebar + ~50px Editor Toolbar */
+    z-index: 5;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.ck-content .table table td {
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid #f1f5f9;
+    color: #334155;
+}
+
+/* Zebra Striping */
+.ck-content .table table tr:nth-child(even) {
+    background-color: #f8fafc;
+}
+
+/* Hover Effect */
+.ck-content .table table tr:hover {
+    background-color: #f1f5f9;
+}
+
+/* Alignment classes */
+.ck-content .text-align-left {
+    text-align: left;
+}
+
+.ck-content .text-align-center {
+    text-align: center;
+}
+
+.ck-content .text-align-right {
+    text-align: right;
+}
+
+.ck-content .text-align-justify {
+    text-align: justify;
+}
+
+/* Lists styling */
+.ck-content ul,
+.ck-content ol {
+    padding-left: 2rem;
+    margin-bottom: 1.25rem;
+}
+
+.ck-content li {
+    margin-bottom: 0.5rem;
+}
+
+.ck-content hr {
+    margin: 2rem 0;
+    border: 0;
+    border-top: 1px solid #e2e8f0;
+}
+
+/* Responsive Embeds (YouTube/Vimeo) */
+.ck-content .media {
+    position: relative;
+    padding-bottom: 56.25%;
+    /* 16:9 aspect ratio */
+    height: 0;
+    overflow: hidden;
+    margin-bottom: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.ck-content .media iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+}
+
+/* Custom Scrollbar */
+.custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+    background: #f1f5f9;
+    border-radius: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+}
+
+.sticky-sidebar {
+    position: sticky;
+    top: 100px;
+    z-index: 10;
+}

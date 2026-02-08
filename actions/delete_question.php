@@ -2,7 +2,7 @@
 require_once '../config/db.php';
 session_start();
 
-if ($_SESSION['role'] === 'teacher' && isset($_GET['id'])) {
+if ($_SESSION['role'] === 'admin' && isset($_GET['id'])) {
     $id = $_GET['id'];
     $course_id = $_GET['course_id'];
     $stmt = $pdo->prepare("DELETE FROM questions WHERE id = ?");

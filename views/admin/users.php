@@ -60,8 +60,7 @@ $users = $stmt->fetchAll();
                             <span class="input-group-text"><i class="bi bi-shield-lock"></i></span>
                             <select name="role" class="form-select">
                                 <option value="student">Student</option>
-                                <option value="teacher">Lecturer</option>
-                                <option value="admin">Admin System</option>
+                                <option value="admin">Admin / Lecturer</option>
                             </select>
                         </div>
                     </div>
@@ -102,9 +101,7 @@ $users = $stmt->fetchAll();
                         </td>
                         <td>
                             <?php if ($user['role'] === 'admin'): ?>
-                                <span class="badge bg-accent text-white py-2 px-3 fw-normal">ADMIN</span>
-                            <?php elseif ($user['role'] === 'teacher'): ?>
-                                <span class="badge bg-primary text-white py-2 px-3 fw-normal">LECTURER</span>
+                                <span class="badge bg-accent text-white py-2 px-3 fw-normal">ADMIN / LECTURER</span>
                             <?php else: ?>
                                 <span class="badge bg-secondary text-white py-2 px-3 fw-normal">STUDENT</span>
                             <?php endif; ?>

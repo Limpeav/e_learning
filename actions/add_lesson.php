@@ -2,33 +2,70 @@
 require_once '../config/db.php';
 session_start();
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_SESSION['role'] === 'teacher') {
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_SESSION['role'] === 'admin') {
     $course_id = $_POST['course_id'];
     $title = trim($_POST['title']);
     $type = $_POST['type'];
     $content = trim($_POST['content']);
 
-    if (empty($title) || empty($content)) {
-        header("Location: ../views/teacher/add_lesson.php?course_id=$course_id&error=All fields are required");
+    if (empty($title)) {
+        header("Location: ../views/teacher/add_lesson.php?course_id=$course_id&error=Lesson title is required");
         exit;
     }
 
     // Handle File Upload
     $material_path = null;
-    if (isset($_FILES['material']) && $_FILES['material']['error'] === UPLOAD_ERR_OK) {
-        $uploadDir = '../public/uploads/materials/';
+    // Check if file was uploaded (error 4 means no file uploaded)
+    if (isset($_FILES['material']) && $_FILES['material']['error'] !== UPLOAD_ERR_NO_FILE) {
+        
+        if ($_FILES['material']['error'] !== UPLOAD_ERR_OK) {
+            $errorMessages = [
+                UPLOAD_ERR_INI_SIZE => 'File exceeds the maximum upload size limit',
+                UPLOAD_ERR_FORM_SIZE => 'File exceeds the form MAX_FILE_SIZE directive',
+                UPLOAD_ERR_PARTIAL => 'File was only partially uploaded',
+                UPLOAD_ERR_NO_TMP_DIR => 'Missing temporary folder',
+                UPLOAD_ERR_CANT_WRITE => 'Failed to write file to disk',
+                UPLOAD_ERR_EXTENSION => 'A PHP extension stopped the file upload'
+            ];
+            $errorMsg = $errorMessages[$_FILES['material']['error']] ?? 'Unknown file upload error: ' . $_FILES['material']['error'];
+            header("Location: ../views/teacher/add_lesson.php?course_id=$course_id&error=" . urlencode($errorMsg));
+            exit;
+        }
+
+        // Use absolute path relative to this script's location
+        // actions/ is one level deep, so dirname(__DIR__) gives the project root
+        $uploadDir = dirname(__DIR__) . '/public/uploads/materials/';
+        
+        // Create directory if it doesn't exist
         if (!is_dir($uploadDir)) {
-            mkdir($uploadDir, 0777, true);
+            if (!mkdir($uploadDir, 0777, true)) {
+                header("Location: ../views/teacher/add_lesson.php?course_id=$course_id&error=" . urlencode("Failed to create upload directory"));
+                exit;
+            }
+        }
+        
+        // Check if directory is writable
+        if (!is_writable($uploadDir)) {
+            header("Location: ../views/teacher/add_lesson.php?course_id=$course_id&error=" . urlencode("Upload directory is not writable"));
+            exit;
         }
         
         $fileExt = strtolower(pathinfo($_FILES['material']['name'], PATHINFO_EXTENSION));
         $allowedExts = ['pdf', 'doc', 'docx', 'ppt', 'pptx', 'zip', 'rar'];
         
-        if (in_array($fileExt, $allowedExts)) {
-            $fileName = uniqid('material_', true) . '.' . $fileExt;
-            if (move_uploaded_file($_FILES['material']['tmp_name'], $uploadDir . $fileName)) {
-                $material_path = $fileName;
-            }
+        if (!in_array($fileExt, $allowedExts)) {
+            header("Location: ../views/teacher/add_lesson.php?course_id=$course_id&error=" . urlencode("Invalid file type. Allowed: PDF, DOC, DOCX, PPT, PPTX, ZIP, RAR"));
+            exit;
+        }
+        
+        $fileName = uniqid('material_', true) . '.' . $fileExt;
+        $targetPath = $uploadDir . $fileName;
+        
+        if (move_uploaded_file($_FILES['material']['tmp_name'], $targetPath)) {
+            $material_path = $fileName;
+        } else {
+            header("Location: ../views/teacher/add_lesson.php?course_id=$course_id&error=" . urlencode("Failed to save uploaded file. Check permissions."));
+            exit;
         }
     }
 

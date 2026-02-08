@@ -37,29 +37,136 @@ $courses = $stmt->fetchAll();
     <?php endif; ?>
 </div>
 
-<div class="text-center mb-5 hero-section">
-    <div class="container">
-      <h1 class="display-3 fw-bold mb-3">Master Your Future with E-Learning</h1>
-      <p class="lead mb-5 opacity-90 mx-auto" style="max-width: 700px;">Access world-class education from anywhere in the world. Learn, grow, and succeed with our expert-led courses designed for your success.</p>
-      <?php if (!isset($_SESSION['user_id'])): ?>
-        <div class="d-flex justify-content-center gap-3">
-            <a class="btn btn-light btn-lg px-5 py-3 rounded-pill fw-bold shadow" href="views/auth/register.php" role="button">Start Learning Now</a>
-            <a class="btn btn-outline-light btn-lg px-5 py-3 rounded-pill fw-bold" href="views/auth/login.php" role="button">Sign In</a>
+<?php if (isset($_SESSION['user_id']) && $_SESSION['role'] === 'admin'): ?>
+    <!-- ADMIN HOME PAGE -->
+    <div class="py-5">
+        <div class="row align-items-center mb-5">
+            <div class="col-lg-8">
+                <span class="badge bg-primary bg-opacity-10 text-primary border border-primary border-opacity-25 px-3 py-2 rounded-pill mb-3">
+                    <i class="bi bi-shield-check me-2"></i>Administration Panel
+                </span>
+                <h1 class="display-4 fw-bold text-accent mb-3">Welcome, <?php echo htmlspecialchars($_SESSION['username']); ?>!</h1>
+                <p class="lead text-muted mb-0">Here's what's happening on your platform today.</p>
+            </div>
+            <div class="col-lg-4 text-lg-end mt-4 mt-lg-0">
+                <a href="views/admin/dashboard.php" class="btn btn-primary btn-lg rounded-pill px-5 shadow-sm fw-bold">
+                    <i class="bi bi-speedometer2 me-2"></i>Full Dashboard
+                </a>
+            </div>
         </div>
-      <?php else: ?>
-        <div class="bg-white bg-opacity-10 d-inline-block p-4 rounded-4 backdrop-blur shadow-lg">
-            <p class="fs-4 mb-4">Ready to continue your journey, <strong><?php echo htmlspecialchars($_SESSION['username']); ?></strong>?</p>
-            <a class="btn btn-light btn-lg px-5 py-3 rounded-pill fw-bold shadow" href="
-            <?php 
-                if($_SESSION['role'] == 'admin') echo 'views/admin/dashboard.php';
-                elseif($_SESSION['role'] == 'teacher') echo 'views/teacher/dashboard.php';
-                else echo 'views/student/dashboard.php';
-            ?>
-            " role="button">Go to Your Dashboard</a>
+
+        <?php
+        // Quick Admin Stats
+        $total_students = $pdo->query("SELECT COUNT(*) FROM users WHERE role = 'student'")->fetchColumn();
+        $total_courses = $pdo->query("SELECT COUNT(*) FROM courses")->fetchColumn();
+        $pending_queries_count = $pdo->query("SELECT COUNT(*) FROM queries WHERE answered_at IS NULL")->fetchColumn();
+        ?>
+
+        <div class="row mb-5">
+            <div class="col-md-4 mb-4 mb-md-0">
+                <div class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden bg-white">
+                    <div class="card-body p-4 d-flex align-items-center">
+                        <div class="bg-primary bg-opacity-10 p-3 rounded-circle me-3">
+                            <i class="bi bi-people-fill text-primary fs-3"></i>
+                        </div>
+                        <div>
+                            <div class="text-muted small fw-bold text-uppercase tracking-wide">Total Students</div>
+                            <div class="fs-2 fw-bold text-accent"><?php echo $total_students; ?></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4 mb-md-0">
+                <div class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden bg-white">
+                    <div class="card-body p-4 d-flex align-items-center">
+                        <div class="bg-success bg-opacity-10 p-3 rounded-circle me-3">
+                            <i class="bi bi-journal-check text-success fs-3"></i>
+                        </div>
+                        <div>
+                            <div class="text-muted small fw-bold text-uppercase tracking-wide">Active Courses</div>
+                            <div class="fs-2 fw-bold text-accent"><?php echo $total_courses; ?></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden bg-white">
+                    <div class="card-body p-4 d-flex align-items-center">
+                        <div class="bg-warning bg-opacity-10 p-3 rounded-circle me-3">
+                            <i class="bi bi-chat-dots-fill text-warning fs-3"></i>
+                        </div>
+                        <div>
+                            <div class="text-muted small fw-bold text-uppercase tracking-wide">Pending Inquiries</div>
+                            <div class="fs-2 fw-bold text-accent"><?php echo $pending_queries_count; ?></div>
+                        </div>
+                        <?php if ($pending_queries_count > 0): ?>
+                            <a href="views/teacher/manage_queries.php" class="btn btn-sm btn-warning rounded-pill ms-auto fw-bold px-3">View</a>
+                        <?php endif; ?>
+                    </div>
+                </div>
+            </div>
         </div>
-      <?php endif; ?>
+
+        <h4 class="fw-bold text-accent mb-4"><i class="bi bi-lightning-fill text-warning me-2"></i>Quick Actions</h4>
+        <div class="row">
+            <div class="col-md-3 mb-3">
+                <a href="views/admin/users.php" class="card card-hover h-100 border-0 shadow-sm rounded-4 text-decoration-none">
+                    <div class="card-body p-4 text-center">
+                        <i class="bi bi-person-plus-fill fs-1 text-primary mb-3 d-block"></i>
+                        <h6 class="fw-bold text-accent mb-1">Manage Users</h6>
+                        <span class="text-muted small">Add or Edit Accounts</span>
+                    </div>
+                </a>
+            </div>
+            <div class="col-md-3 mb-3">
+                <a href="views/teacher/add_course.php" class="card card-hover h-100 border-0 shadow-sm rounded-4 text-decoration-none">
+                    <div class="card-body p-4 text-center">
+                        <i class="bi bi-journal-plus fs-1 text-success mb-3 d-block"></i>
+                        <h6 class="fw-bold text-accent mb-1">Add Course</h6>
+                        <span class="text-muted small">Create New Content</span>
+                    </div>
+                </a>
+            </div>
+            <div class="col-md-3 mb-3">
+                <a href="views/admin/enrollments.php" class="card card-hover h-100 border-0 shadow-sm rounded-4 text-decoration-none">
+                    <div class="card-body p-4 text-center">
+                        <i class="bi bi-card-checklist fs-1 text-info mb-3 d-block"></i>
+                        <h6 class="fw-bold text-accent mb-1">Enrollments</h6>
+                        <span class="text-muted small">Track Progress</span>
+                    </div>
+                </a>
+            </div>
+            <div class="col-md-3 mb-3">
+                <a href="views/teacher/manage_queries.php" class="card card-hover h-100 border-0 shadow-sm rounded-4 text-decoration-none">
+                    <div class="card-body p-4 text-center">
+                        <i class="bi bi-question-circle-fill fs-1 text-danger mb-3 d-block"></i>
+                        <h6 class="fw-bold text-accent mb-1">Student Q&A</h6>
+                        <span class="text-muted small">Answer Questions</span>
+                    </div>
+                </a>
+            </div>
+        </div>
     </div>
-</div>
+<?php else: ?>
+    <!-- PUBLIC / STUDENT HERO SECTION -->
+    <div class="text-center mb-5 hero-section">
+        <div class="container">
+          <h1 class="display-3 fw-bold mb-3">Master Your Future with E-Learning</h1>
+          <p class="lead mb-5 opacity-90 mx-auto" style="max-width: 700px;">Access world-class education from anywhere in the world. Learn, grow, and succeed with our expert-led courses designed for your success.</p>
+          <?php if (!isset($_SESSION['user_id'])): ?>
+            <div class="d-flex justify-content-center gap-3">
+                <a class="btn btn-light btn-lg px-5 py-3 rounded-pill fw-bold shadow" href="views/auth/register.php" role="button">Start Learning Now</a>
+                <a class="btn btn-outline-light btn-lg px-5 py-3 rounded-pill fw-bold" href="views/auth/login.php" role="button">Sign In</a>
+            </div>
+          <?php else: ?>
+            <div class="bg-white bg-opacity-10 d-inline-block p-4 rounded-4 backdrop-blur shadow-lg">
+                <p class="fs-4 mb-4">Ready to continue your journey, <strong><?php echo htmlspecialchars($_SESSION['username']); ?></strong>?</p>
+                <a class="btn btn-light btn-lg px-5 py-3 rounded-pill fw-bold shadow" href="views/student/dashboard.php" role="button">Go to Your Dashboard</a>
+            </div>
+          <?php endif; ?>
+        </div>
+    </div>
+<?php endif; ?>
 
 <div class="pb-5">
     <div class="row align-items-center mb-5">

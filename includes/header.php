@@ -64,8 +64,6 @@ if ($_SERVER['SERVER_PORT'] == '3000' || $_SERVER['HTTP_HOST'] == 'localhost:300
         <?php if (isset($_SESSION['user_id'])): ?>
             <?php if ($_SESSION['role'] === 'admin'): ?>
                 <li class="nav-item"><a class="nav-link <?php echo ($current_page == 'dashboard.php' && strpos($_SERVER['SCRIPT_NAME'], '/admin/') !== false) ? 'active' : ''; ?>" href="<?php echo $base_url; ?>/views/admin/dashboard.php">Dashboard</a></li>
-            <?php elseif ($_SESSION['role'] === 'teacher'): ?>
-                <li class="nav-item"><a class="nav-link <?php echo ($current_page == 'dashboard.php' && strpos($_SERVER['SCRIPT_NAME'], '/teacher/') !== false) ? 'active' : ''; ?>" href="<?php echo $base_url; ?>/views/teacher/dashboard.php">Dashboard</a></li>
             <?php else: ?>
                 <li class="nav-item"><a class="nav-link <?php echo ($current_page == 'dashboard.php' && strpos($_SERVER['SCRIPT_NAME'], '/student/') !== false) ? 'active' : ''; ?>" href="<?php echo $base_url; ?>/views/student/dashboard.php">My Learning</a></li>
             <?php endif; ?>

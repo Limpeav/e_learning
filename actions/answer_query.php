@@ -2,7 +2,7 @@
 session_start();
 require_once '../config/db.php';
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_SESSION['user_id']) && $_SESSION['role'] === 'teacher') {
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_SESSION['user_id']) && $_SESSION['role'] === 'admin') {
     $query_id = $_POST['query_id'];
     $answer = $_POST['answer'];
     $now = date('Y-m-d H:i:s');

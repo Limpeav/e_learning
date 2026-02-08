@@ -1,0 +1,36 @@
+<svg width="400" height="300" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      .empty-text { font-family: 'Arial', sans-serif; fill: #94A3B8; }
+    </style>
+  </defs>
+  <!-- Background -->
+  <rect width="400" height="300" fill="transparent"/>
+  
+  <!-- Folder icon -->
+  <g transform="translate(200, 120)">
+    <!-- Folder base -->
+    <path d="M-80,-40 L-80,40 Q-80,50 -70,50 L70,50 Q80,50 80,40 L80,-20 Q80,-30 70,-30 L-30,-30 L-40,-40 L-70,-40 Q-80,-40 -80,-30 Z" 
+          fill="none" 
+          stroke="#CBD5E1" 
+          stroke-width="3" 
+          stroke-linecap="round" 
+          stroke-linejoin="round"/>
+    
+    <!-- Document -->
+    <g transform="translate(0, 15)">
+      <rect x="-25" y="-30" width="50" height="60" rx="3" fill="none" stroke="#CBD5E1" stroke-width="2"/>
+      <line x1="-15" y1="-15" x2="15" y2="-15" stroke="#CBD5E1" stroke-width="2" stroke-linecap="round"/>
+      <line x1="-15" y1="0" x2="15" y2="0" stroke="#CBD5E1" stroke-width="2" stroke-linecap="round"/>
+      <line x1="-15" y1="15" x2="5" y2="15" stroke="#CBD5E1" stroke-width="2" stroke-linecap="round"/>
+    </g>
+  </g>
+  
+  <!-- Text -->
+  <text x="200" y="220" text-anchor="middle" class="empty-text" font-size="18" font-weight="600">
+    No content yet
+  </text>
+  <text x="200" y="245" text-anchor="middle" class="empty-text" font-size="14" opacity="0.7">
+    Start by creating your first lesson
+  </text>
+</svg>

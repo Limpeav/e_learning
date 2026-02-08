@@ -286,6 +286,29 @@ $progress_percent =
                 <!-- Lesson Content -->
                 <div class="card-body p-0" style="background-color: #f1f5f9;">
                     <div class="py-5 px-3">
+                        <?php if (!empty($current_lesson['material_path'])): ?>
+                            <div class="mx-auto mb-4" style="max-width: 850px;">
+                                <div class="card border-0 shadow-sm bg-primary bg-opacity-10 rounded-3">
+                                    <div class="card-body d-flex align-items-center justify-content-between p-3">
+                                        <div class="d-flex align-items-center">
+                                            <div class="bg-white p-2 rounded-circle me-3 text-primary">
+                                                <i class="bi bi-file-earmark-text-fill fs-4"></i>
+                                            </div>
+                                            <div>
+                                                <h6 class="mb-0 fw-bold text-primary">Lesson Material</h6>
+                                                <small class="text-muted">Download attached resource</small>
+                                            </div>
+                                        </div>
+                                        <a href="../../public/uploads/materials/<?php echo htmlspecialchars($current_lesson['material_path']); ?>" 
+                                           class="btn btn-primary btn-sm rounded-pill px-3 fw-bold" 
+                                           download>
+                                            <i class="bi bi-download me-2"></i>Download
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        <?php endif; ?>
+
                         <article class="ms-word-document ck-content shadow-lg mx-auto p-4 p-md-5 bg-white rounded-2" style="max-width: 850px; border-top: 5px solid var(--primary-color) !important; min-height: 800px;">
                             <?php echo $current_lesson["content"]; ?>
                         </article>

@@ -2,7 +2,7 @@
 require_once '../../config/db.php';
 include '../../includes/header.php'; 
 
-if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'teacher') {
+if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
     header("Location: ../auth/login.php");
     exit;
 }
@@ -14,8 +14,9 @@ if (!$course_id) {
 }
 
 // Fetch course details
-$stmt = $pdo->prepare("SELECT * FROM courses WHERE id = ? AND teacher_id = ?");
-$stmt->execute([$course_id, $_SESSION['user_id']]);
+// Fetch course details
+$stmt = $pdo->prepare("SELECT * FROM courses WHERE id = ?");
+$stmt->execute([$course_id]);
 $course = $stmt->fetch();
 
 if (!$course) {
@@ -91,9 +92,19 @@ if ($lesson_id) {
                                     <?php echo htmlspecialchars($lesson['title']); ?>
                                 </span>
                             </a>
-                            <a href="add_lesson.php?course_id=<?php echo $course_id; ?>&edit_id=<?php echo $lesson['id']; ?>" class="btn btn-icon btn-sm <?php echo $is_active ? 'text-white' : 'text-muted hover-primary'; ?>" title="Edit Lesson">
-                                <i class="bi bi-pencil-fill"></i>
-                            </a>
+                            <div class="d-flex gap-1">
+                                <a href="add_lesson.php?course_id=<?php echo $course_id; ?>&edit_id=<?php echo $lesson['id']; ?>" 
+                                   class="btn btn-icon btn-sm <?php echo $is_active ? 'text-white' : 'text-muted hover-primary'; ?>" 
+                                   title="Edit Lesson">
+                                    <i class="bi bi-pencil-fill"></i>
+                                </a>
+                                <a href="../../actions/delete_lesson.php?id=<?php echo $lesson['id']; ?>&course_id=<?php echo $course_id; ?>" 
+                                   class="btn btn-icon btn-sm <?php echo $is_active ? 'text-white' : 'text-muted hover-danger'; ?>" 
+                                   title="Delete Lesson"
+                                   onclick="return confirm('Are you sure you want to delete this lesson?\n\nTitle: <?php echo addslashes($lesson['title']); ?>\n\nThis action cannot be undone.');">
+                                    <i class="bi bi-trash-fill"></i>
+                                </a>
+                            </div>
                         </div>
                     <?php endforeach; ?>
                     <?php endif; ?>
@@ -178,6 +189,29 @@ if ($lesson_id) {
                 <!-- Lesson Body -->
                 <div class="card-body bg-light p-0">
                      <div class="p-5">
+                        <?php if (!empty($current_lesson['material_path'])): ?>
+                            <div class="mx-auto mb-4" style="max-width: 850px;">
+                                <div class="card border-0 shadow-sm bg-primary bg-opacity-10 rounded-3">
+                                    <div class="card-body d-flex align-items-center justify-content-between p-3">
+                                        <div class="d-flex align-items-center">
+                                            <div class="bg-white p-2 rounded-circle me-3 text-primary">
+                                                <i class="bi bi-file-earmark-text-fill fs-4"></i>
+                                            </div>
+                                            <div>
+                                                <h6 class="mb-0 fw-bold text-primary">Lesson Material</h6>
+                                                <small class="text-muted">Download attached resource</small>
+                                            </div>
+                                        </div>
+                                        <a href="../../public/uploads/materials/<?php echo htmlspecialchars($current_lesson['material_path']); ?>" 
+                                           class="btn btn-primary btn-sm rounded-pill px-3 fw-bold" 
+                                           download>
+                                            <i class="bi bi-download me-2"></i>Download
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        <?php endif; ?>
+
                         <article class="ms-word-document shadow-sm mx-auto p-5 bg-white rounded-3 border">
                             <?php echo $current_lesson['content']; ?>
                         </article>
@@ -227,6 +261,12 @@ if ($lesson_id) {
 .hover-primary:hover {
     color: var(--primary-color) !important;
     background: rgba(37, 99, 235, 0.1);
+    border-radius: 50%;
+}
+
+.hover-danger:hover {
+    color: #dc3545 !important;
+    background: rgba(220, 53, 69, 0.1);
     border-radius: 50%;
 }
 

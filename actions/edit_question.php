@@ -2,7 +2,7 @@
 require_once '../config/db.php';
 session_start();
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_SESSION['role'] === 'teacher') {
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_SESSION['role'] === 'admin') {
     $question_id = $_POST['question_id'];
     $quiz_id = $_POST['quiz_id'];
     $course_id = $_POST['course_id'];

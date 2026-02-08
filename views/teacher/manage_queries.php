@@ -2,7 +2,7 @@
 require_once '../../config/db.php';
 include '../../includes/header.php';
 
-if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'teacher') {
+if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
     header("Location: ../auth/login.php");
     exit;
 }
@@ -15,10 +15,9 @@ $stmt = $pdo->prepare("
     FROM queries q 
     JOIN users u ON q.student_id = u.id 
     JOIN courses c ON q.course_id = c.id 
-    WHERE c.teacher_id = ? 
     ORDER BY q.answered_at IS NULL DESC, q.created_at DESC
 ");
-$stmt->execute([$teacher_id]);
+$stmt->execute();
 $queries = $stmt->fetchAll();
 ?>
 

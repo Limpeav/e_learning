@@ -13,9 +13,14 @@ $courses = $stmt->fetchAll();
 
 <div class="d-flex justify-content-between align-items-center mb-4">
     <h2 class="text-accent fw-bold"><i class="bi bi-journal-bookmark-fill me-2 text-primary"></i>Manage Courses</h2>
-    <a href="dashboard.php" class="btn btn-outline-secondary">
-        <i class="bi bi-arrow-left me-1"></i>Back
-    </a>
+    <div>
+        <a href="../teacher/add_course.php" class="btn btn-primary rounded-pill px-4 me-2">
+            <i class="bi bi-plus-lg me-1"></i>New Course
+        </a>
+        <a href="dashboard.php" class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-left me-1"></i>Back
+        </a>
+    </div>
 </div>
 
 <div class="card border-0 shadow-sm overflow-hidden">
@@ -63,11 +68,14 @@ $courses = $stmt->fetchAll();
                             <?php echo date('M d, Y', strtotime($course['created_at'])); ?>
                         </td>
                         <td class="text-end pe-4">
-                            <a href="view_lessons.php?course_id=<?php echo $course['id']; ?>" class="btn btn-sm btn-outline-primary rounded-pill px-3">
-                                <i class="bi bi-journal-text me-1"></i>Lessons
+                            <a href="../teacher/view_course.php?id=<?php echo $course['id']; ?>" class="btn btn-sm btn-outline-primary rounded-pill px-3 mb-1">
+                                <i class="bi bi-gear me-1"></i>Manage
                             </a>
-                            <a href="../../actions/delete_course.php?id=<?php echo $course['id']; ?>" class="btn btn-sm btn-outline-danger rounded-pill px-3 ms-1" onclick="return confirm('Delete this course?')">
-                                <i class="bi bi-trash"></i>
+                            <a href="../teacher/edit_course.php?id=<?php echo $course['id']; ?>" class="btn btn-sm btn-light border text-secondary rounded-circle ms-1 mb-1" title="Edit">
+                                <i class="bi bi-pencil-fill"></i>
+                            </a>
+                            <a href="../../actions/delete_course.php?id=<?php echo $course['id']; ?>" class="btn btn-sm btn-light border text-danger rounded-circle ms-1 mb-1" onclick="return confirm('Delete this course?')" title="Delete">
+                                <i class="bi bi-trash-fill"></i>
                             </a>
                         </td>
                     </tr>

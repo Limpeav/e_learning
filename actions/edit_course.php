@@ -3,7 +3,7 @@ session_start();
 require_once '../config/db.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'teacher') {
+    if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
         die("Unauthorized access.");
     }
 
@@ -13,8 +13,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $teacher_id = $_SESSION['user_id'];
 
     // Verify ownership
-    $stmt = $pdo->prepare("SELECT thumbnail FROM courses WHERE id = ? AND teacher_id = ?");
-    $stmt->execute([$course_id, $teacher_id]);
+    $stmt = $pdo->prepare("SELECT thumbnail FROM courses WHERE id = ?");
+    $stmt->execute([$course_id]);
     $course = $stmt->fetch();
 
     if (!$course) {

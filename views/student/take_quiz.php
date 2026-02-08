@@ -154,10 +154,14 @@ $is_taking_quiz = $retake || !$has_taken_quiz;
     border-color: #ef4444 !important;
 }
 
-.quiz-option.correct label .option-letter,
+.quiz-option.correct label .option-letter {
+    background-color: white !important;
+    color: #10b981 !important;
+}
+
 .quiz-option.incorrect label .option-letter {
     background-color: white !important;
-    color: inherit !important;
+    color: #ef4444 !important;
 }
 
 .quiz-option.disabled label {

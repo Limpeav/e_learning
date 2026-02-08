@@ -31,11 +31,26 @@ if (!$user) {
                     <h2 class="mb-0 fw-bold h4"><i class="bi bi-person-vcard me-2 text-primary"></i>User Intelligence</h2>
                     <p class="small opacity-75 mb-0">Reviewing details for <strong><?php echo htmlspecialchars($user['username']); ?></strong></p>
                 </div>
+                <button type="button" class="btn btn-warning rounded-pill px-4 btn-sm me-2" data-bs-toggle="modal" data-bs-target="#resetPasswordModal">
+                    <i class="bi bi-key me-1"></i>Reset Password
+                </button>
                 <a href="users.php" class="btn btn-outline-light rounded-pill px-4 btn-sm">
                     <i class="bi bi-arrow-left me-1"></i>Back
                 </a>
             </div>
             <div class="card-body p-5">
+                <?php if (isset($_GET['success'])): ?>
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <i class="bi bi-check-circle-fill me-2"></i><?php echo htmlspecialchars($_GET['success']); ?>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                <?php endif; ?>
+                <?php if (isset($_GET['error'])): ?>
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <i class="bi bi-exclamation-triangle-fill me-2"></i><?php echo htmlspecialchars($_GET['error']); ?>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                <?php endif; ?>
                 <div class="row mb-5">
                     <div class="col-md-4 text-center border-end">
                         <div class="mb-4">
@@ -104,7 +119,7 @@ if (!$user) {
                                 </div>
                             <?php endif; ?>
                         </div>
-                    <?php elseif ($user['role'] === 'teacher'): ?>
+                    <?php elseif ($user['role'] === 'admin'): ?>
                         <h5 class="text-accent fw-bold mb-4 d-flex align-items-center">
                             <i class="bi bi-briefcase-fill me-2 text-primary"></i>Instructional Catalog
                         </h5>
@@ -132,6 +147,49 @@ if (!$user) {
                     <?php endif; ?>
                 </div>
             </div>
+        </div>
+    </div>
+</div>
+
+<!-- Reset Password Modal -->
+<div class="modal fade" id="resetPasswordModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg">
+            <div class="modal-header bg-warning text-dark">
+                <h5 class="modal-title fw-bold"><i class="bi bi-key-fill me-2"></i>Reset Password</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <form action="../../actions/reset_user_password.php" method="POST">
+                <div class="modal-body p-4">
+                    <input type="hidden" name="user_id" value="<?php echo $user['id']; ?>">
+                    <p class="text-muted mb-4">You are resetting the password for <strong><?php echo htmlspecialchars($user['username']); ?></strong>.</p>
+                    
+                    <div class="alert alert-info py-2 small">
+                        <i class="bi bi-info-circle me-1"></i>
+                        The new password will be known to you. Please share it securely with the user and instruct them to <strong>change it immediately</strong> after logging in.
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">New Password</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="bi bi-lock"></i></span>
+                            <input type="password" name="new_password" class="form-control" placeholder="Enter new password" required minlength="6">
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Confirm Password</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="bi bi-lock-fill"></i></span>
+                            <input type="password" name="confirm_password" class="form-control" placeholder="Confirm new password" required minlength="6">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer bg-light">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-warning fw-bold">Update Password</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>

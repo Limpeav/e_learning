@@ -2,7 +2,7 @@
 require_once '../../config/db.php';
 include '../../includes/header.php'; 
 
-if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'teacher') {
+if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
     header("Location: ../auth/login.php");
     exit;
 }
@@ -53,9 +53,17 @@ if ($edit_id) {
             </ol>
         </nav>
 
+        <?php if (isset($_GET['error'])): ?>
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                <?php echo htmlspecialchars($_GET['error']); ?>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        <?php endif; ?>
+
         <div class="row justify-content-center">
             <div class="col-lg-10">
-                <form action="../../actions/<?php echo $is_edit ? 'edit_lesson.php' : 'add_lesson.php'; ?>" method="POST" id="lessonForm">
+                <form action="../../actions/<?php echo $is_edit ? 'edit_lesson.php' : 'add_lesson.php'; ?>" method="POST" id="lessonForm" enctype="multipart/form-data">
                     <input type="hidden" name="course_id" value="<?php echo $course_id; ?>">
                     <?php if ($is_edit): ?>
                         <input type="hidden" name="lesson_id" value="<?php echo $edit_id; ?>">
@@ -107,6 +115,25 @@ if ($edit_id) {
                                     <div class="progress mt-2" style="height: 3px;">
                                         <div class="progress-bar bg-primary" role="progressbar" style="width: 15%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100"></div>
                                     </div>
+                                </div>
+
+                                <!-- Material Upload Area -->
+                                <div class="bg-white p-4 rounded-4 shadow-sm border mb-4">
+                                    <label for="material" class="form-label fw-bold small text-uppercase text-primary letter-spacing-1 mb-2">Lesson Material (Optional)</label>
+                                    <input type="file" 
+                                           class="form-control" 
+                                           id="material" 
+                                           name="material" 
+                                           accept=".pdf,.doc,.docx,.ppt,.pptx,.zip,.rar">
+                                    <div class="form-text text-muted">Supported formats: PDF, DOC, DOCX, PPT, PPTX, ZIP, RAR</div>
+                                    <?php if ($is_edit && !empty($lesson['material_path'])): ?>
+                                        <div class="mt-2">
+                                            <span class="text-muted">Current file: </span>
+                                            <a href="../../public/uploads/materials/<?php echo htmlspecialchars($lesson['material_path']); ?>" target="_blank" class="text-decoration-none">
+                                                <i class="bi bi-file-earmark-arrow-down me-1"></i>Download/View
+                                            </a>
+                                        </div>
+                                    <?php endif; ?>
                                 </div>
 
 
@@ -260,10 +287,38 @@ if ($edit_id) {
                 }
             });
             
-            // Sync CKEditor content with textarea before form submission
-            document.getElementById('lessonForm').addEventListener('submit', function(e) {
+            // Function to sync CKEditor content
+            function syncEditorContent() {
                 const textarea = document.getElementById('editor');
-                textarea.value = editorInstance.getData();
+                if (editorInstance && typeof editorInstance.getData === 'function') {
+                    textarea.value = editorInstance.getData();
+                    console.log('CKEditor content synced successfully');
+                    return true;
+                } else {
+                    console.warn('CKEditor not initialized, using textarea content directly');
+                    return false;
+                }
+            }
+            
+            // Sync CKEditor content with textarea before form submission
+            const form = document.getElementById('lessonForm');
+            form.addEventListener('submit', function(e) {
+                console.log('Form submission triggered');
+                syncEditorContent();
+                // Allow form to submit
+                return true;
+            });
+            
+            // Also attach to all submit buttons explicitly to ensure sync happens
+            const submitButtons = form.querySelectorAll('button[type="submit"]');
+            submitButtons.forEach(button => {
+                button.addEventListener('click', function(e) {
+                    console.log('Submit button clicked:', this.innerText);
+                    // Small delay to ensure CKEditor has finished any pending updates
+                    setTimeout(() => {
+                        syncEditorContent();
+                    }, 10);
+                });
             });
         })
         .catch(error => {

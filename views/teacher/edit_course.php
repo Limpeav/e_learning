@@ -2,7 +2,7 @@
 require_once '../../config/db.php';
 include '../../includes/header.php'; 
 
-if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'teacher') {
+if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
     header("Location: ../auth/login.php");
     exit;
 }
@@ -14,8 +14,8 @@ if (!$course_id) {
 }
 
 // Fetch course details and verify ownership
-$stmt = $pdo->prepare("SELECT * FROM courses WHERE id = ? AND teacher_id = ?");
-$stmt->execute([$course_id, $_SESSION['user_id']]);
+$stmt = $pdo->prepare("SELECT * FROM courses WHERE id = ?");
+$stmt->execute([$course_id]);
 $course = $stmt->fetch();
 
 if (!$course) {

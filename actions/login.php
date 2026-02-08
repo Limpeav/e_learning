@@ -24,10 +24,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Redirect based on role
         if ($user['role'] === 'admin') {
             header("Location: ../views/admin/dashboard.php");
-        } elseif ($user['role'] === 'teacher') {
-            header("Location: ../views/teacher/dashboard.php");
         } else {
-            header("Location: ../views/student/dashboard.php");
+            // Redirect students to the home page
+            header("Location: ../index.php");
         }
         exit;
     } else {
